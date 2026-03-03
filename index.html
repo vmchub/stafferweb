@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Progetto Documentario - Game</title>
+    <title>Hub Multiuso</title>
     
     <style>
         :root {
-            --primary: #DC143C;        /* Rosso Crimson */
-            --discord: #5865F2;       /* Blurple di Discord */
+            --primary: #DC143C;
+            --discord: #5865F2;
             --bg: #ffffff;
             --text: #1a1a1a;
             --card-bg: #f8f9fa;
@@ -22,212 +22,247 @@
         }
 
         body {
-            font-family: 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Inter', system-ui, sans-serif;
             background-color: var(--bg);
             color: var(--text);
             margin: 0;
-            line-height: 1.6;
             transition: var(--transition);
+            overflow-x: hidden;
         }
 
-        /* --- NAVIGAZIONE --- */
+        /* --- BACKGROUND ANIMATO --- */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        /* --- NAVBAR --- */
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 1rem 5%;
             background: var(--card-bg);
+            backdrop-filter: blur(10px);
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text);
-            margin-left: 20px;
-            font-weight: 600;
-            transition: var(--transition);
-        }
-
-        .nav-links a:hover { color: var(--primary); }
-
-        /* --- SEZIONE DOCUMENTARIO --- */
-        .section { padding: 80px 10%; }
-        .doc-header { text-align: center; margin-bottom: 50px; }
-        
-        .capitolo {
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 70vh;
             display: flex;
-            gap: 40px;
-            margin-bottom: 60px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .capitolo:nth-child(even) { flex-direction: row-reverse; }
-
-        .doc-text { flex: 1; min-width: 300px; }
-        .doc-img {
-            flex: 1;
-            min-width: 300px;
-            height: 300px;
-            background: var(--card-bg);
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
+            flex-direction: column;
             justify-content: center;
-            overflow: hidden;
-            border: 2px dashed var(--primary);
-        }
-
-        .doc-img img { width: 100%; height: 100%; object-fit: cover; }
-
-        /* --- SEZIONE OPZIONI CARINE --- */
-        .options-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-        }
-
-        .option-card {
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 20px;
-            text-align: center;
-            transition: var(--transition);
-            border: 1px solid transparent;
-        }
-
-        .option-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--primary);
-        }
-
-        /* --- BOTTONI SPECIALI --- */
-        .btn-discord {
-            background-color: var(--discord);
-            color: white !important;
-            padding: 12px 25px;
-            border-radius: 50px;
-            display: inline-flex;
             align-items: center;
-            gap: 10px;
-            font-weight: bold;
-            text-decoration: none;
-            transition: 0.3s;
+            text-align: center;
+            padding: 0 20px;
         }
 
-        .btn-discord:hover { filter: brightness(1.2); transform: scale(1.05); }
+        .hero h1 { font-size: 3.5rem; margin-bottom: 10px; }
 
-        .btn-copy {
+        .btn-main {
             background: var(--primary);
             color: white;
+            text-decoration: none;
+            padding: 18px 35px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            box-shadow: 0 10px 20px rgba(220, 20, 60, 0.3);
+            transition: var(--transition);
+        }
+
+        .btn-main:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(220, 20, 60, 0.5);
+        }
+
+        /* --- GRIGLIA FUNZIONI --- */
+        .container { padding: 50px 10%; }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 25px;
+            text-align: center;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover { transform: scale(1.03); }
+
+        .icon { width: 50px; height: 50px; margin-bottom: 15px; }
+
+        /* --- FUNZIONI SPECIFICHE --- */
+        .btn-action {
+            background: var(--text);
+            color: var(--bg);
             border: none;
             padding: 10px 20px;
             border-radius: 10px;
             cursor: pointer;
+            margin-top: 10px;
         }
 
-        footer { text-align: center; padding: 50px; opacity: 0.6; }
+        .btn-discord {
+            background: var(--discord);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        #quote-text { font-style: italic; min-height: 50px; }
+
+        footer { text-align: center; padding: 60px; opacity: 0.5; }
 
     </style>
 </head>
 <body>
 
+    <canvas id="bg-canvas"></canvas>
+
     <nav>
-        <div style="font-size: 1.5rem; font-weight: 800; color: var(--primary);">GAME.LAB</div>
-        <div class="nav-links">
-            <a href="#doc">Documentario</a>
-            <a href="#social">Social</a>
-            <button id="theme-toggle" style="cursor:pointer; background:none; border:none; font-size: 1.2rem;">🌙</button>
-        </div>
+        <div style="font-weight: 900; letter-spacing: -1px; font-size: 1.5rem;">DOCK_HUB</div>
+        <button id="theme-toggle" style="background:none; border:none; cursor:pointer; font-size: 1.5rem;">🌙</button>
     </nav>
 
-    <section class="section" id="doc">
-        <div class="doc-header">
-            <h1>🎬 Il Mio Documentario</h1>
-            <p>Un viaggio attraverso immagini e racconti inediti.</p>
+    <header class="hero">
+        <h1>Benvenuti nell'Hub</h1>
+        <p>Tutte le risorse e le funzioni in un unico posto.</p>
+        <div style="margin-top: 30px;">
+            <a href="https://github.com/vmchub/Documenti" class="btn-main" target="_blank">📖 Vai al Documentario</a>
         </div>
+    </header>
 
-        <div class="capitolo">
-            <div class="doc-text">
-                <h2>01. Le Origini</h2>
-                <p>Inserisci qui la storia di come è nato il tuo progetto. Puoi parlare delle prime scoperte o delle motivazioni che ti hanno spinto a iniziare.</p>
+    <main class="container">
+        <div class="grid">
+            
+            <div class="card">
+                <img src="icons/idea.png" alt="Icona" class="icon" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3176/3176298.png'">
+                <h3>Citazione del Giorno</h3>
+                <p id="quote-text">"Clicca il tasto qui sotto per una perla di saggezza."</p>
+                <button class="btn-action" onclick="nuovaCitazione()">Nuova Citazione</button>
             </div>
-            <div class="doc-img">
-                <img src="capitolo1.jpg" alt="Icona Capitolo 1" onerror="this.src='https://via.placeholder.com/400x300?text=Carica+Immagine+Qui'">
-            </div>
-        </div>
 
-        <div class="capitolo">
-            <div class="doc-text">
-                <h2>02. L'Evoluzione</h2>
-                <p>Descrivi lo sviluppo del documentario. Quali sfide hai affrontato? Quali sono i momenti più importanti?</p>
-            </div>
-            <div class="doc-img">
-                <img src="capitolo2.jpg" alt="Icona Capitolo 2" onerror="this.src='https://via.placeholder.com/400x300?text=Immagine+Evoluzione'">
-            </div>
-        </div>
-    </section>
-
-    <section class="section" id="social" style="background: var(--card-bg); border-radius: 50px 50px 0 0;">
-        <div class="doc-header">
-            <h2>✨ Opzioni & Social</h2>
-            <p>Rimani in contatto e scopri i link utili.</p>
-        </div>
-
-        <div class="options-grid">
-            <div class="option-card">
-                <img src="icons/discord.png" style="width: 50px; margin-bottom: 15px;" onerror="this.style.display='none'">
+            <div class="card">
+                <img src="icons/discord.png" alt="Icona" class="icon" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3670/3670157.png'">
                 <h3>Community</h3>
-                <p>Entra nel server per discutere del progetto.</p>
-                <a href="https://discord.gg/TUOLINK" class="btn-discord">Unisciti su Discord</a>
+                <p>Entra nel nostro server ufficiale per supporto e chiacchiere.</p>
+                <a href="https://discord.gg/TUO_LINK" class="btn-discord" target="_blank">Unisciti ora</a>
             </div>
 
-            <div class="option-card">
-                <h3>Condividi</h3>
-                <p>Copia il link di questo sito per inviarlo agli amici.</p>
-                <button class="btn-copy" onclick="copiaLink()">Copia Link Sito</button>
-                <p id="copy-status" style="font-size: 0.8rem; margin-top: 10px; color: var(--primary);"></p>
+            <div class="card">
+                <img src="icons/game.png" alt="Icona" class="icon" onerror="this.src='https://cdn-icons-png.flaticon.com/512/808/808518.png'">
+                <h3>Mini Clicker</h3>
+                <p>Quante volte riesci a cliccare?</p>
+                <h4 id="click-count">Punti: 0</h4>
+                <button class="btn-action" onclick="aggiungiPunto()">Clicca!</button>
             </div>
 
-            <div class="option-card">
-                <h3>Supporto</h3>
-                <p>Ti piace il lavoro? Lascia un feedback!</p>
-                <a href="mailto:tua@email.com" style="color: var(--primary);">Invia una Email</a>
+            <div class="card">
+                <img src="icons/share.png" alt="Icona" class="icon" onerror="this.src='https://cdn-icons-png.flaticon.com/512/1828/1828921.png'">
+                <h3>Condividi l'Hub</h3>
+                <p>Copia l'indirizzo di questo sito con un solo click.</p>
+                <button class="btn-action" onclick="copiaLink()">Copia URL</button>
+                <p id="copy-msg" style="font-size: 0.8rem; color: var(--primary);"></p>
             </div>
+
         </div>
-    </section>
+    </main>
 
     <footer>
-        <p>&copy; 2026 - Progetto Documentario creato da Game</p>
+        <p>Hub Creato per GitHub Pages</p>
     </footer>
 
     <script>
-        // Gestione Tema Dark/Light
+        // --- 1. GESTIONE TEMA ---
         const themeBtn = document.getElementById('theme-toggle');
-        const html = document.documentElement;
-        
         themeBtn.addEventListener('click', () => {
-            if(html.hasAttribute('data-theme')) {
-                html.removeAttribute('data-theme');
+            const isDark = document.documentElement.hasAttribute('data-theme');
+            if(isDark) {
+                document.documentElement.removeAttribute('data-theme');
                 themeBtn.innerText = "🌙";
             } else {
-                html.setAttribute('data-theme', 'dark');
+                document.documentElement.setAttribute('data-theme', 'dark');
                 themeBtn.innerText = "☀️";
             }
         });
 
-        // Funzione per copiare il link
+        // --- 2. GENERATORE CITAZIONI ---
+        const citazioni = [
+            "Il miglior modo per predire il futuro è crearlo.",
+            "La creatività è l'intelligenza che si diverte.",
+            "Non smettere mai di imparare, perché la vita non smette mai di insegnare.",
+            "Tutto ciò che puoi immaginare è reale."
+        ];
+        function nuovaCitazione() {
+            const random = Math.floor(Math.random() * citazioni.length);
+            document.getElementById('quote-text').innerText = citazioni[random];
+        }
+
+        // --- 3. CLICKER GAME ---
+        let punti = 0;
+        function aggiungiPunto() {
+            punti++;
+            document.getElementById('click-count').innerText = "Punti: " + punti;
+        }
+
+        // --- 4. COPIA LINK ---
         function copiaLink() {
-            const url = window.location.href;
-            navigator.clipboard.writeText(url).then(() => {
-                const status = document.getElementById('copy-status');
-                status.innerText = "Link copiato con successo! ✅";
-                setTimeout(() => status.innerText = "", 3000);
+            navigator.clipboard.writeText(window.location.href);
+            const msg = document.getElementById('copy-msg');
+            msg.innerText = "Link copiato! 🔗";
+            setTimeout(() => msg.innerText = "", 2000);
+        }
+
+        // --- 5. BACKGROUND PARTICELLE (OPZIONE CARINA) ---
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let particles = [];
+        for(let i=0; i<50; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 2 + 1,
+                vx: Math.random() * 1 - 0.5,
+                vy: Math.random() * 1 - 0.5
             });
         }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--primary');
+            particles.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+                if(p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                if(p.y < 0 || p.y > canvas.height) p.vy *= -1;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI*2);
+                ctx.fill();
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
     </script>
 </body>
 </html>
