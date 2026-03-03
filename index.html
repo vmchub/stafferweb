@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hub Multiuso</title>
+    <title>Hub Multiuso - Game</title>
     
     <style>
         :root {
@@ -38,19 +38,16 @@
             z-index: -1;
             opacity: 0.5;
         }
-        /* Animazione per il tasto Shaker */
-     @keyframes shake {
-         0% { transform: translate(1px, 1px) rotate(0deg); }
-        10% { transform: translate(-1px, -2px) rotate(-1deg); }
-        30% { transform: translate(3px, 2px) rotate(0deg); }
-        50% { transform: translate(-1px, 2px) rotate(1deg); }
-       100% { transform: translate(1px, 1px) rotate(0deg); }
-   }
 
-     .shake-anim {
-         animation: shake 0.5s;
-         animation-iteration-count: infinite;
-   }
+        /* --- ANIMAZIONI --- */
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            50% { transform: translate(-1px, 2px) rotate(1deg); }
+            100% { transform: translate(1px, 1px) rotate(0deg); }
+        }
+        .shake-anim { animation: shake 0.5s infinite; }
 
         /* --- NAVBAR --- */
         nav {
@@ -67,7 +64,7 @@
 
         /* --- HERO SECTION --- */
         .hero {
-            height: 70vh;
+            height: 60vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -75,7 +72,6 @@
             text-align: center;
             padding: 0 20px;
         }
-
         .hero h1 { font-size: 3.5rem; margin-bottom: 10px; }
 
         .btn-main {
@@ -89,15 +85,10 @@
             box-shadow: 0 10px 20px rgba(220, 20, 60, 0.3);
             transition: var(--transition);
         }
+        .btn-main:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(220, 20, 60, 0.5); }
 
-        .btn-main:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 15px 30px rgba(220, 20, 60, 0.5);
-        }
-
-        /* --- GRIGLIA FUNZIONI --- */
+        /* --- GRIGLIA --- */
         .container { padding: 50px 10%; }
-        
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -110,15 +101,10 @@
             border-radius: 25px;
             text-align: center;
             transition: var(--transition);
-            position: relative;
-            overflow: hidden;
+            border: 2px solid transparent;
         }
+        .card:hover { transform: scale(1.03); border-color: var(--primary); }
 
-        .card:hover { transform: scale(1.03); }
-
-        .icon { width: 50px; height: 50px; margin-bottom: 15px; }
-
-        /* --- FUNZIONI SPECIFICHE --- */
         .btn-action {
             background: var(--text);
             color: var(--bg);
@@ -127,6 +113,7 @@
             border-radius: 10px;
             cursor: pointer;
             margin-top: 10px;
+            font-weight: bold;
         }
 
         .btn-discord {
@@ -140,10 +127,7 @@
             font-weight: bold;
         }
 
-        #quote-text { font-style: italic; min-height: 50px; }
-
         footer { text-align: center; padding: 60px; opacity: 0.5; }
-
     </style>
 </head>
 <body>
@@ -151,11 +135,12 @@
     <canvas id="bg-canvas"></canvas>
 
     <nav>
-        <div style="font-weight: 900; letter-spacing: -1px; font-size: 1.5rem;">DOCK_HUB</div>
+        <div style="font-weight: 900; font-size: 1.5rem;">DOCK_HUB</div>
         <button id="theme-toggle" style="background:none; border:none; cursor:pointer; font-size: 1.5rem;">🌙</button>
     </nav>
 
     <header class="hero">
+        <h2 id="greeting" style="color: var(--primary); margin-bottom: 0;">Ciao!</h2>
         <h1>Benvenuti nell'Hub</h1>
         <p>Tutte le risorse e le funzioni in un unico posto.</p>
         <div style="margin-top: 30px;">
@@ -167,116 +152,122 @@
         <div class="grid">
             
             <div class="card">
-                <img src="icons/idea.png" alt="Icona" class="icon" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3176/3176298.png'">
-                <h3>Citazione del Giorno</h3>
-                <p id="quote-text">"Clicca il tasto qui sotto per una perla di saggezza."</p>
+                <h3>Saggezza</h3>
+                <p id="quote-text">"La creatività è l'intelligenza che si diverte."</p>
                 <button class="btn-action" onclick="nuovaCitazione()">Nuova Citazione</button>
             </div>
 
-         <div class="card" id="hex-card" style="border: 3px solid var(--primary); transition: 0.5s;">
-             <img src="icons/palette.png" class="icon" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3593/3593532.png'">
-             <h3>Color Lab</h3>
-             <p>Clicca per trovare l'ispirazione:</p>
-    
-             <div id="color-preview" style="height: 80px; width: 80%; margin: 15px auto; border-radius: 15px; background-color: var(--primary); border: 2px solid rgba(0,0,0,0.1);"></div>
-    
-              <h2 id="hex-text" style="font-family: monospace; letter-spacing: 2px;">#DC143C</h2>
-    
-              <button class="btn-action" onclick="generaHexCasuale()">Genera Colore</button>
-         </div>
-
-            <div class="card">
-                <img src="icons/discord.png" alt="Icona" class="icon" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3670/3670157.png'">
-                <h3>Community</h3>
-                <p>Entra nel nostro server ufficiale per supporto e chiacchiere.</p>
-                <a href="https://discord.gg/CanAwFSDsV" class="btn-discord" target="_blank">Unisciti ora</a>
+            <div class="card" id="hex-card">
+                <h3>Color Lab</h3>
+                <div id="color-preview" style="height: 60px; width: 60px; margin: 10px auto; border-radius: 50%; background: var(--primary);"></div>
+                <h4 id="hex-text">#DC143C</h4>
+                <button class="btn-action" onclick="generaHexCasuale()">Genera HEX</button>
             </div>
 
             <div class="card">
-                <img src="icons/game.png" alt="Icona" class="icon" onerror="this.src='https://cdn-icons-png.flaticon.com/512/808/808518.png'">
+                <h3>Community</h3>
+                <p>Unisciti al nostro server Discord ufficiale.</p>
+                <a href="https://discord.gg/CanAwFSDsV" class="btn-discord" target="_blank">Entra ora</a>
+            </div>
+
+            <div class="card">
                 <h3>Mini Clicker</h3>
-                <p>Quante volte riesci a cliccare?</p>
                 <h4 id="click-count">Punti: 0</h4>
                 <button class="btn-action" onclick="aggiungiPunto()">Clicca!</button>
-                
-            <div class="card">
-                 <h3>Focus Mode</h3>
-                 <p id="timer-display">25:00</p>
-                 <button class="btn-action" id="start-timer" onclick="toggleTimer()">Avvia Timer</button>
             </div>
 
-           <div class="card">
-                <h3>Area Pericolosa</h3>
-                <p>Cosa succede se premi?</p>
-               <button class="btn-action" style="background:orange" onclick="shaker(this)">NON PREMERE</button>
-           </div>
+            <div class="card">
+                <h3>Focus Mode</h3>
+                <p id="timer-display" style="font-size: 1.5rem; font-weight: bold;">25:00</p>
+                <button class="btn-action" id="start-timer" onclick="toggleTimer()">Avvia Timer</button>
+            </div>
 
             <div class="card">
-                <img src="icons/share.png" alt="Icona" class="icon" onerror="this.src='https://cdn-icons-png.flaticon.com/512/1828/1828921.png'">
-                <h3>Condividi l'Hub</h3>
-                <p>Copia l'indirizzo di questo sito con un solo click.</p>
+                <h3>Area Pericolosa</h3>
+                <p>Non premere il tasto...</p>
+                <button class="btn-action" style="background:orange" onclick="shaker(this)">NON PREMERE</button>
+            </div>
+
+            <div class="card">
+                <h3>Condividi</h3>
+                <p>Copia l'URL del sito negli appunti.</p>
                 <button class="btn-action" onclick="copiaLink()">Copia URL</button>
-                <p id="copy-msg" style="font-size: 0.8rem; color: var(--primary);"></p>
+                <p id="copy-msg" style="font-size: 0.8rem;"></p>
             </div>
 
         </div>
     </main>
 
     <footer>
-        <p>Hub Creato per GitHub Pages</p>
+        <p>Hub creato da Game &bull; 2026</p>
     </footer>
 
     <script>
-        // --- 1. GESTIONE TEMA ---
+        // --- TEMA E GREETING ---
         const themeBtn = document.getElementById('theme-toggle');
         themeBtn.addEventListener('click', () => {
             const isDark = document.documentElement.hasAttribute('data-theme');
-            if(isDark) {
-                document.documentElement.removeAttribute('data-theme');
-                themeBtn.innerText = "🌙";
-            } else {
-                document.documentElement.setAttribute('data-theme', 'dark');
-                themeBtn.innerText = "☀️";
-            }
+            document.documentElement.toggleAttribute('data-theme');
+            themeBtn.innerText = isDark ? "🌙" : "☀️";
         });
 
+        const hour = new Date().getHours();
+        const greeting = document.getElementById('greeting');
+        if (hour < 12) greeting.innerText = "Buongiorno, Game! 🌅";
+        else if (hour < 18) greeting.innerText = "Buon pomeriggio, Game! ☀️";
+        else greeting.innerText = "Buonasera, Game! 🌙";
+
+        // --- COLOR LAB ---
         function generaHexCasuale() {
-        // 1. Genera un numero casuale tra 0 e 16777215 (il valore massimo del bianco #FFFFFF)
-       // 2. .toString(16) lo trasforma in base esadecimale (HEX)
-           let randomColor = Math.floor(Math.random() * 16777215).toString(16);
-
-    // 3. .padStart(6, '0') assicura che il codice abbia sempre 6 cifre (es. aggiunge zeri se esce #F12)
-           let hex = "#" + randomColor.padStart(6, '0').toUpperCase();
-
-    // 4. Applichiamo il colore agli elementi del sito
-          document.getElementById('hex-text').innerText = hex;
-          document.getElementById('hex-text').style.color = hex;
-          document.getElementById('color-preview').style.backgroundColor = hex;
-    
-    // Cambiamo anche il bordo della card per un effetto extra!
-          document.getElementById('hex-card').style.borderColor = hex;
-    }
-        
-        // --- 2. GENERATORE CITAZIONI ---
-        const citazioni = [
-            "Il miglior modo per predire il futuro è crearlo.",
-            "La creatività è l'intelligenza che si diverte.",
-            "Non smettere mai di imparare, perché la vita non smette mai di insegnare.",
-            "Tutto ciò che puoi immaginare è reale."
-        ];
-        function nuovaCitazione() {
-            const random = Math.floor(Math.random() * citazioni.length);
-            document.getElementById('quote-text').innerText = citazioni[random];
+            let hex = "#" + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0').toUpperCase();
+            document.getElementById('hex-text').innerText = hex;
+            document.getElementById('hex-text').style.color = hex;
+            document.getElementById('color-preview').style.backgroundColor = hex;
+            document.getElementById('hex-card').style.borderColor = hex;
         }
 
-        // --- 3. CLICKER GAME ---
+        // --- CITAZIONI ---
+        const citazioni = ["Il futuro appartiene a chi crede nei sogni.", "Sii il cambiamento che vuoi vedere.", "L'unico limite è la tua mente.", "Codice pulito, mente serena."];
+        function nuovaCitazione() {
+            document.getElementById('quote-text').innerText = citazioni[Math.floor(Math.random()*citazioni.length)];
+        }
+
+        // --- CLICKER ---
         let punti = 0;
         function aggiungiPunto() {
             punti++;
             document.getElementById('click-count').innerText = "Punti: " + punti;
         }
 
-        // --- 4. COPIA LINK ---
+        // --- TIMER ---
+        let timerInterval, timeLeft = 25 * 60;
+        function toggleTimer() {
+            const btn = document.getElementById('start-timer');
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+                btn.innerText = "Riprendi";
+            } else {
+                btn.innerText = "Pausa";
+                timerInterval = setInterval(() => {
+                    timeLeft--;
+                    let m = Math.floor(timeLeft/60), s = timeLeft%60;
+                    document.getElementById('timer-display').innerText = `${m}:${s<10?'0':''}${s}`;
+                    if (timeLeft <= 0) clearInterval(timerInterval);
+                }, 1000);
+            }
+        }
+
+        // --- SHAKER ---
+        function shaker(btn) {
+            btn.parentElement.classList.add('shake-anim');
+            setTimeout(() => {
+                btn.parentElement.classList.remove('shake-anim');
+                alert("Te l'avevo detto! 😂");
+            }, 1000);
+        }
+
+        // --- COPIA LINK ---
         function copiaLink() {
             navigator.clipboard.writeText(window.location.href);
             const msg = document.getElementById('copy-msg');
@@ -284,34 +275,19 @@
             setTimeout(() => msg.innerText = "", 2000);
         }
 
-        // --- 5. BACKGROUND PARTICELLE (OPZIONE CARINA) ---
+        // --- BACKGROUND ---
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        let particles = [];
-        for(let i=0; i<50; i++) {
-            particles.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                radius: Math.random() * 2 + 1,
-                vx: Math.random() * 1 - 0.5,
-                vy: Math.random() * 1 - 0.5
-            });
-        }
-
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        let p = Array.from({length: 50}, () => ({x: Math.random()*canvas.width, y: Math.random()*canvas.height, vx: Math.random()-0.5, vy: Math.random()-0.5}));
         function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.clearRect(0,0,canvas.width,canvas.height);
             ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--primary');
-            particles.forEach(p => {
-                p.x += p.vx;
-                p.y += p.vy;
-                if(p.x < 0 || p.x > canvas.width) p.vx *= -1;
-                if(p.y < 0 || p.y > canvas.height) p.vy *= -1;
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.radius, 0, Math.PI*2);
-                ctx.fill();
+            p.forEach(i => {
+                i.x += i.vx; i.y += i.vy;
+                if(i.x<0 || i.x>canvas.width) i.vx*=-1;
+                if(i.y<0 || i.y>canvas.height) i.vy*=-1;
+                ctx.beginPath(); ctx.arc(i.x, i.y, 2, 0, Math.PI*2); ctx.fill();
             });
             requestAnimationFrame(animate);
         }
