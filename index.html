@@ -38,6 +38,19 @@
             z-index: -1;
             opacity: 0.5;
         }
+        /* Animazione per il tasto Shaker */
+     @keyframes shake {
+         0% { transform: translate(1px, 1px) rotate(0deg); }
+        10% { transform: translate(-1px, -2px) rotate(-1deg); }
+        30% { transform: translate(3px, 2px) rotate(0deg); }
+        50% { transform: translate(-1px, 2px) rotate(1deg); }
+       100% { transform: translate(1px, 1px) rotate(0deg); }
+   }
+
+     .shake-anim {
+         animation: shake 0.5s;
+         animation-iteration-count: infinite;
+   }
 
         /* --- NAVBAR --- */
         nav {
@@ -185,7 +198,18 @@
                 <p>Quante volte riesci a cliccare?</p>
                 <h4 id="click-count">Punti: 0</h4>
                 <button class="btn-action" onclick="aggiungiPunto()">Clicca!</button>
+                
+            <div class="card">
+                 <h3>Focus Mode</h3>
+                 <p id="timer-display">25:00</p>
+                 <button class="btn-action" id="start-timer" onclick="toggleTimer()">Avvia Timer</button>
             </div>
+
+           <div class="card">
+                <h3>Area Pericolosa</h3>
+                <p>Cosa succede se premi?</p>
+               <button class="btn-action" style="background:orange" onclick="shaker(this)">NON PREMERE</button>
+           </div>
 
             <div class="card">
                 <img src="icons/share.png" alt="Icona" class="icon" onerror="this.src='https://cdn-icons-png.flaticon.com/512/1828/1828921.png'">
