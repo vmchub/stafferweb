@@ -160,6 +160,18 @@
                 <button class="btn-action" onclick="nuovaCitazione()">Nuova Citazione</button>
             </div>
 
+         <div class="card" id="hex-card" style="border: 3px solid var(--primary); transition: 0.5s;">
+             <img src="icons/palette.png" class="icon" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3593/3593532.png'">
+             <h3>Color Lab</h3>
+             <p>Clicca per trovare l'ispirazione:</p>
+    
+             <div id="color-preview" style="height: 80px; width: 80%; margin: 15px auto; border-radius: 15px; background-color: var(--primary); border: 2px solid rgba(0,0,0,0.1);"></div>
+    
+              <h2 id="hex-text" style="font-family: monospace; letter-spacing: 2px;">#DC143C</h2>
+    
+              <button class="btn-action" onclick="generaHexCasuale()">Genera Colore</button>
+         </div>
+
             <div class="card">
                 <img src="icons/discord.png" alt="Icona" class="icon" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3670/3670157.png'">
                 <h3>Community</h3>
@@ -204,6 +216,23 @@
             }
         });
 
+        function generaHexCasuale() {
+        // 1. Genera un numero casuale tra 0 e 16777215 (il valore massimo del bianco #FFFFFF)
+       // 2. .toString(16) lo trasforma in base esadecimale (HEX)
+           let randomColor = Math.floor(Math.random() * 16777215).toString(16);
+
+    // 3. .padStart(6, '0') assicura che il codice abbia sempre 6 cifre (es. aggiunge zeri se esce #F12)
+           let hex = "#" + randomColor.padStart(6, '0').toUpperCase();
+
+    // 4. Applichiamo il colore agli elementi del sito
+          document.getElementById('hex-text').innerText = hex;
+          document.getElementById('hex-text').style.color = hex;
+          document.getElementById('color-preview').style.backgroundColor = hex;
+    
+    // Cambiamo anche il bordo della card per un effetto extra!
+          document.getElementById('hex-card').style.borderColor = hex;
+    }
+        
         // --- 2. GENERATORE CITAZIONI ---
         const citazioni = [
             "Il miglior modo per predire il futuro è crearlo.",
